@@ -1,0 +1,33 @@
+ReactDOM.render(
+  <table border="1" cellPadding="8" style={{ borderCollapse: 'collapse', margin: '20px' }}>
+    <thead>
+      <tr>
+        <th>Игрок</th>
+        <th>Возраст</th>
+        <th>Рейтинг ELO</th>
+        <th>Команда</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>MAGIXX</td>
+        <td>20</td>
+        <td>3777</td>
+        <td>SPIRIT</td>
+      </tr>
+      <tr>
+        <td>MONESY</td>
+        <td>21</td>
+        <td>4100</td>
+        <td>FALCONS</td>
+      </tr>
+      <tr>
+        <td>KYOSUKE</td>
+        <td>19</td>
+        <td>3800</td>
+        <td>FALCONS</td>
+      </tr>
+    </tbody>
+  </table>,
+  document.getElementById("app")
+);

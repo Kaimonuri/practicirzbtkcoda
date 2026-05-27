@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Практика №3: Основы JSX</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.25.0/babel.min.js"></script>
+    <style>
+        .user-info { padding: 15px; border-radius: 8px; margin: 10px 0; }
+        .photo { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
+        .table th { cursor: pointer; }
+        .stat-card { background: #09a691; padding: 10px; border-radius: 5px; margin: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="container mt-4">
+    <h1>Практика №3</h1>
+
+    <div id="task2" class="card p-3 mb-3"></div>
+    <div id="task3" class="card p-3 mb-3"></div>
+    <div id="task4" class="card p-3 mb-3"></div>
+    <div id="task5" class="card p-3 mb-3"></div>
+</div>
+
+<script type="text/babel">
+
+// 2
+ReactDOM.render(
+    <div>
+        <h2>Задание 2: Выражение в JSX</h2>
+        <p>5 + 2 = <strong>{5 + 2}</strong></p>
+    </div>,
+    document.getElementById('task2')
+);
+
+// 3
+const user = {
+    id: 1,
+    age: 18,
+    firstName: 'Давид',
+    lastName: 'Битаров',
+    getFullName: function() {
+        return `${this.firstName} ${this.lastName}`;
+    }
+};
+
+const styleObj = {
+    color: 'purple',
+    fontFamily: 'Verdana',
+    backgroundColor: '#f0f0f0',
+    padding: '15px',
+    borderRadius: '10px'
+};
+
+const inlineStyle = { color: 'red', fontWeight: 'bold' };
+
+ReactDOM.render(
+    <div>
+        <h2>Задание 3: ФИО и возраст</h2>
+        {/* Использование className и style как объект */}
+        <div className="user-info" style={styleObj}>
+            <p>Полное имя: <span style={inlineStyle}>{user.getFullName()}</span></p>
+            <p>Возраст: <span style={inlineStyle}>{user.age}</span></p>
+            
+        </div>
+        {/* Демонстрация разных стилей */}
+        
+    </div>,
+    document.getElementById('task3')
+);
+
+// 4
+class Calculator extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            num1: '',
+            num2: '',
+            result: ''
+        };
+    }
+
+    handleOperation = (op) => {
+        const n1 = parseFloat(this.state.num1);
+        const n2 = parseFloat(this.state.num2);
+        if (isNaN(n1) || isNaN(n2)) {
+            this.setState({ result: 'Введите оба числа' });
+            return;
+        }
+        switch(op) {
+            case '+': this.setState({ result: n1 + n2 }); break;
+            case '-': this.setState({ result: n1 - n2 }); break;
+            case '*': this.setState({ result: n1 * n2 }); break;
+            case '/': this.setState({ result: n2 !== 0 ? n1 / n2 : 'Ошибка: деление на 0' }); break;
+            default: break;
+        }
+    };
+
+    render() {
+        return (
+            <div>
+                <h2>Задание 4: Калькулятор</h2>
+                <div className="row g-3 align-items-center">
+                    <div className="col-auto">
+                        <input 
+                            type="number" 
+                            className="form-control" 
+                            placeholder="Число 1"
+                            value={this.state.num1}
+                            onChange={(e) => this.setState({ num1: e.target.value })}
+                        />
+                    </div>
+                    <div className="col-auto">
+                        <input 
+                            type="number" 
+                            className="form-control" 
+                            placeholder="Число 2"
+                            value={this.state.num2}
+                            onChange={(e) => this.setState({ num2: e.target.value })}
+                        />
+                    </div>
+                    <div className="col-auto">
+                        <button className="btn btn-primary me-1" onClick={() => this.handleOperation('+')}>+</button>
+                        <button className="btn btn-primary me-1" onClick={() => this.handleOperation('-')}>-</button>
+                        <button className="btn btn-primary me-1" onClick={() => this.handleOperation('*')}>*</button>
+                        <button className="btn btn-primary" onClick={() => this.handleOperation('/')}>/</button>
+                    </div>
+                </div>
+                <p className="mt-3"><strong>Результат: {this.state.result}</strong></p>
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(<Calculator />, document.getElementById('task4'));
+
+// 5
+const initialPeople = [
+    { id: 1, firstName: 'Иван', lastName: 'Иванов', year: 1985, profession: 'Инженер', country: 'Россия', photo: 'http://images-s.kinorium.com/movie/shot/54847/w1500_39180025.jpg' },
+    { id: 2, firstName: 'Мария', lastName: 'Петрова', year: 1990, profession: 'Врач', country: 'Россия', photo: 'https://24smi.org/public/media/celebrity/2023/09/19/m47qaofzgnte-mariya-petrova.jpg' },
+    { id: 3, firstName: 'Джон', lastName: 'Смит', year: 1980, profession: 'Программист', country: 'США', photo: 'https://i.pinimg.com/736x/a6/46/47/a6464780b6b6d6c137012bc057729fac.jpg' },
+    { id: 4, firstName: 'Анна', lastName: 'Коваль', year: 1995, profession: 'Учитель', country: 'Польша', photo: 'https://avatars.mds.yandex.net/i?id=cb81fd6f1117d8970fa7481d384eb1582fcef262-4011233-images-thumbs&n=13' },
+    { id: 5, firstName: 'Петр', lastName: 'Сидоров', year: 1978, profession: 'Инженер', country: 'Россия', photo: 'https://cdn.moypolk.ru/static/resize/w390/soldiers/photo/2016/04/25/aa6d11756fd5e0502815448e0e465b68.jpg' },
+];
+
+class Directory extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            people: initialPeople,
+            sortField: 'lastName',
+            sortDirection: 'asc',
+            filterProfession: '',
+            filterCountry: '',
+            showPhotos: true,
+            stats: this.calculateStats(initialPeople)
+        };
+    }
+
+    calculateStats(people) {
+        const byCountry = people.reduce((acc, p) => {
+            acc[p.country] = (acc[p.country] || 0) + 1;
+            return acc;
+        }, {});
+        const byProfession = people.reduce((acc, p) => {
+            acc[p.profession] = (acc[p.profession] || 0) + 1;
+            return acc;
+        }, {});
+        return { byCountry, byProfession };
+    }
+
+    sortPeople = (field) => {
+        const direction = this.state.sortField === field && this.state.sortDirection === 'asc' ? 'desc' : 'asc';
+        const sorted = [...this.state.people].sort((a, b) => {
+            if (a[field] < b[field]) return direction === 'asc' ? -1 : 1;
+            if (a[field] > b[field]) return direction === 'asc' ? 1 : -1;
+            return 0;
+        });
+        this.setState({ 
+            people: sorted, 
+            sortField: field, 
+            sortDirection: direction,
+            stats: this.calculateStats(sorted)
+        });
+    };
+
+    applyFilters = () => {
+        let filtered = initialPeople;
+        if (this.state.filterProfession) {
+            filtered = filtered.filter(p => 
+                p.profession.toLowerCase().includes(this.state.filterProfession.toLowerCase())
+            );
+        }
+        if (this.state.filterCountry) {
+            filtered = filtered.filter(p => 
+                p.country.toLowerCase().includes(this.state.filterCountry.toLowerCase())
+            );
+        }
+        this.setState({ 
+            people: filtered,
+            stats: this.calculateStats(filtered)
+        });
+    };
+
+    resetFilters = () => {
+        this.setState({ 
+            people: initialPeople,
+            filterProfession: '',
+            filterCountry: '',
+            stats: this.calculateStats(initialPeople)
+        });
+    };
+
+    render() {
+        return (
+            <div>
+                <h2>Задание 5: Справочник персоналий</h2>
+
+                <div className="row mb-3">
+                    <div className="col">
+                        <input 
+                            type="text" 
+                            className="form-control" 
+                            placeholder="Фильтр по профессии"
+                            value={this.state.filterProfession}
+                            onChange={(e) => this.setState({ filterProfession: e.target.value })}
+                        />
+                    </div>
+                    <div className="col">
+                        <input 
+                            type="text" 
+                            className="form-control" 
+                            placeholder="Фильтр по стране"
+                            value={this.state.filterCountry}
+                            onChange={(e) => this.setState({ filterCountry: e.target.value })}
+                        />
+                    </div>
+                    <div className="col-auto">
+                        <button className="btn btn-success me-2" onClick={this.applyFilters}>Применить</button>
+                        <button className="btn btn-secondary" onClick={this.resetFilters}>Сброс</button>
+                    </div>
+                </div>
+
+                <div className="form-check mb-3">
+                    <input 
+                        type="checkbox" 
+                        className="form-check-input" 
+                        id="showPhotos"
+                        checked={this.state.showPhotos}
+                        onChange={(e) => this.setState({ showPhotos: e.target.checked })}
+                    />
+                    <label className="form-check-label" htmlFor="showPhotos">Показывать фото</label>
+                </div>
+
+                <div className="row mb-3">
+                    <div className="col-md-6">
+                        <div className="stat-card">
+                            <h5>По странам:</h5>
+                            {Object.entries(this.state.stats.byCountry).map(([country, count]) => (
+                                <span key={country} className="badge bg-info me-2">{country}: {count}</span>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="stat-card">
+                            <h5>По профессиям:</h5>
+                            {Object.entries(this.state.stats.byProfession).map(([prof, count]) => (
+                                <span key={prof} className="badge bg-warning me-2">{prof}: {count}</span>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                <table className="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            {this.state.showPhotos && <th>Фото</th>}
+                            <th onClick={() => this.sortPeople('lastName')} style={{cursor: 'pointer'}}>
+                                Фамилия {this.state.sortField === 'lastName' && (this.state.sortDirection === 'asc' ? '↑' : '↓')}
+                            </th>
+                            <th onClick={() => this.sortPeople('firstName')} style={{cursor: 'pointer'}}>
+                                Имя {this.state.sortField === 'firstName' && (this.state.sortDirection === 'asc' ? '↑' : '↓')}
+                            </th>
+                            <th onClick={() => this.sortPeople('year')} style={{cursor: 'pointer'}}>
+                                Год {this.state.sortField === 'year' && (this.state.sortDirection === 'asc' ? '↑' : '↓')}
+                            </th>
+                            <th onClick={() => this.sortPeople('profession')} style={{cursor: 'pointer'}}>
+                                Профессия {this.state.sortField === 'profession' && (this.state.sortDirection === 'asc' ? '↑' : '↓')}
+                            </th>
+                            <th onClick={() => this.sortPeople('country')} style={{cursor: 'pointer'}}>
+                                Страна {this.state.sortField === 'country' && (this.state.sortDirection === 'asc' ? '↑' : '↓')}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.people.map(person => (
+                            <tr key={person.id}>
+                                {this.state.showPhotos && (
+                                    <td><img src={person.photo} alt={person.firstName} className="photo" /></td>
+                                )}
+                                <td>{person.lastName}</td>
+                                <td>{person.firstName}</td>
+                                <td>{person.year}</td>
+                                <td>{person.profession}</td>
+                                <td>{person.country}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(<Directory />, document.getElementById('task5'));
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

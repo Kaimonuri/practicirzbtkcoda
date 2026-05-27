@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Книжный магазин | React компоненты (лаба 4)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #f7f5f0;
+            font-family: 'Segoe UI', 'Roboto', 'Georgia', serif;
+        }
+        .top-bar {
+            background-color: #2c2c2c;
+            color: #aaa;
+            font-size: 12px;
+            padding: 8px 0;
+        }
+        .main-header {
+            background: white;
+            padding: 20px 0;
+            border-bottom: 1px solid #eae6df;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #1e3c3f;
+            text-decoration: none;
+        }
+        .logo span {
+            color: #e67e22;
+        }
+        .search-box {
+            border-radius: 40px;
+            border: 1px solid #e0dbd1;
+            padding: 10px 20px;
+            width: 100%;
+            background: #fefcf8;
+        }
+        .search-box:focus {
+            outline: none;
+            border-color: #e67e22;
+        }
+        .header-icons i {
+            font-size: 22px;
+            color: #3a3a3a;
+            margin-left: 22px;
+            cursor: pointer;
+        }
+        .header-icons i:hover {
+            color: #e67e22;
+        }
+        .nav-categories {
+            background: white;
+            border-bottom: 1px solid #edeae4;
+            padding: 12px 0;
+        }
+        .nav-categories a {
+            color: #4a4a4a;
+            text-decoration: none;
+            margin-right: 32px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+        .nav-categories a:hover {
+            color: #e67e22;
+        }
+        .hero-banner {
+            background: linear-gradient(105deg, #1e3c3f 0%, #2f6b6b 100%);
+            border-radius: 28px;
+            padding: 48px 40px;
+            margin: 32px 0 28px;
+            color: white;
+        }
+        .hero-banner h1 {
+            font-size: 42px;
+            font-weight: 700;
+        }
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 40px 0 20px 0;
+            position: relative;
+            display: inline-block;
+            color: #1e2e32;
+        }
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 70px;
+            height: 3px;
+            background: #e67e22;
+            border-radius: 4px;
+        }
+        .book-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.04);
+            height: 100%;
+            border: 1px solid #efebe4;
+
+        }
+        .book-img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            background-color: #f0ede8;
+
+        }
+        .book-info {
+            padding: 18px 16px 20px;
+        }
+        .book-title {
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 6px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 44px;
+        }
+        .book-author {
+            font-size: 13px;
+            color: #8e8a82;
+            margin-bottom: 10px;
+        }
+        .price-current {
+            font-size: 20px;
+            font-weight: 800;
+            color: #2c3e2f;
+        }
+        .price-old {
+            font-size: 13px;
+            color: #b2aba0;
+            text-decoration: line-through;
+            margin-left: 8px;
+        }
+        .rating {
+            color: #f5b342;
+            font-size: 12px;
+            margin-top: 8px;
+            letter-spacing: 1px;
+        }
+        .promo-card {
+            background: #fef8ed;
+            border-radius: 24px;
+            padding: 22px 20px;
+            margin-bottom: 28px;
+            border-left: 5px solid #e67e22;
+        }
+        footer {
+            background: #1e2e2f;
+            color: #cfcec6;
+            padding: 48px 0 28px;
+            margin-top: 65px;
+        }
+        @media (max-width: 768px) {
+            .hero-banner h1 { font-size: 28px; }
+            .nav-categories a { margin-right: 18px; font-size: 13px; }
+            .book-img { height: 220px; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script type="text/babel">
+
+
+    function Footer(props) {
+        return (
+            <footer>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-4 mb-4">
+                            <h5 className="text-light mb-3">О магазине</h5>
+                            <p className="small">Крупнейший книжный интернет-магазин. Более 500 000 книг, доставка по всей России.</p>
+                        </div>
+                        <div className="col-md-4 mb-4">
+                            <h5 className="text-light mb-3">Контакты</h5>
+                            <p className="small">8-800-555-35-35<br/>info@bookshop.ru</p>
+                        </div>
+                        <div className="col-md-4 mb-4">
+                            <h5 className="text-light mb-3">Мы в соцсетях</h5>
+                            <i className="fab fa-vk fa-lg me-3"></i>
+                            <i className="fab fa-telegram fa-lg me-3"></i>
+                            <i className="fab fa-youtube fa-lg"></i>
+                        </div>
+                    </div>
+                    <hr className="bg-secondary opacity-25"/>
+                    <div className="text-center small py-3">© {props.year} Книжный магазин «Читай-город». Все права защищены.</div>
+                </div>
+            </footer>
+        );
+    }
+
+
+    const HeroBanner = ({ title = "Книги, которые меняют жизнь", subtitle = "Бестселлеры и новинки со скидкой до 30%" }) => (
+        <div className="hero-banner">
+            <div className="row align-items-center">
+                <div className="col-lg-8">
+                    <h1>{title}</h1>
+                    <p className="lead mt-3">{subtitle}</p>
+                    <button className="btn btn-light rounded-pill px-4 py-2 mt-2 fw-semibold">Выбрать книгу →</button>
+                </div>
+                <div className="col-lg-4 text-center d-none d-lg-block">
+                    <i className="fas fa-book-open fa-5x opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    );
+
+    // СПОСОБ 3: КЛАССОВЫЙ КОМПОНЕНТ
+    class DiscountCard extends React.Component {
+        render() {
+            return (
+                <div className="promo-card" style={{ background: "#e8f0ea" }}>
+                    <i className="fas fa-id-card me-2 text-success"></i>
+                    <strong>Дисконтная карта</strong>
+                    <p className="small mt-2">Накопительная скидка до 15% для постоянных покупателей.</p>
+                    <button className="btn btn-outline-success btn-sm rounded-pill">Подробнее</button>
+                </div>
+            );
+        }
+    }
+
+
+    function BookCard({ id, title, author, price, oldPrice, imgSrc, rating = 0, ...restProps }) {
+        return (
+            <div className="col-md-6 col-lg-4 col-xl-3 mb-4" {...restProps}>
+                <div className="book-card">
+                    <div className="position-relative">
+                        <img 
+                            src={imgSrc} 
+                            className="book-img" 
+                            alt={title} 
+                            loading="lazy" 
+                            onError={(e) => { 
+                                e.target.src = 'https://via.placeholder.com/300x400?text=Обложка+не+доступна'; 
+                                e.target.onerror = null; 
+                            }} 
+                        />
+                    </div>
+                    <div className="book-info">
+                        <div className="book-title">{title}</div>
+                        <div className="book-author">{author}</div>
+                        <div className="d-flex align-items-baseline flex-wrap">
+                            <span className="price-current">{price} ₽</span>
+                            {oldPrice && <span className="price-old">{oldPrice} ₽</span>}
+                        </div>
+                        {rating > 0 && (
+                            <div className="rating">
+                                {"★".repeat(Math.floor(rating))}{"☆".repeat(5 - Math.floor(rating))} 
+                                <span className="text-dark ms-1">{rating}</span>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+
+    function BooksGrid({ books, title }) {
+        return (
+            <div className="mt-4">
+                <h2 className="section-title">{title}</h2>
+                <div className="row">
+                    {books.map(book => (
+                        <BookCard key={book.id} {...book} />
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
+    function DeliveryInfo({ size = 100, message }) {
+        return (
+            <div className="promo-card" style={{ background: "#ecf6f2" }}>
+                <i className="fas fa-truck-fast me-2 text-secondary"></i>
+                <strong>Информация о доставке:</strong> {message || "Бесплатно от 1500₽"} 
+                <div className="mt-2 small">Размер упаковки: {size} см (значение по умолчанию)</div>
+                <div className="small text-muted mt-1">* демонстрация defaultProps</div>
+            </div>
+        );
+    }
+    DeliveryInfo.defaultProps = {
+        size: 100,
+        message: "Стандартная доставка 2-4 дня"
+    };
+
+
+    function SidebarPromo({ children, bg = "#fef5e8" }) {
+        return (
+            <div className="promo-card" style={{ backgroundColor: bg }}>
+                {children}
+            </div>
+        );
+    }
+
+
+    function App() {
+      
+        const booksData = [
+            { id: 1, title: "Думай медленно... решай быстро", author: "Даниэль Канеман", price: 520, oldPrice: 750, imgSrc: "https://avatars.mds.yandex.net/get-mpic/16487691/2a0000019b08bfbef5d6e0fcd514b9c2d027/orig", rating: 4.8 },
+            { id: 2, title: "Атлант расправил плечи", author: "Айн Рэнд", price: 690, oldPrice: null, imgSrc: "https://alpinabook.ru/upload/iblock/ec9/7v0v2g2g0vekf0wrd2jg5171col0opxl/01fBIrEr_cover512.jpg.webp", rating: 4.9 },
+            { id: 3, title: "Искусство войны", author: "Сунь Цзы", price: 350, oldPrice: 500, imgSrc: "https://avatars.mds.yandex.net/get-mpic/18677324/2a0000019b7713d7dafdb92f14d775eb8ea0/orig", rating: 4.5 },
+            { id: 4, title: "Стив Джобс. Биография", author: "Уолтер Айзексон", price: 890, oldPrice: 1200, imgSrc: "https://image.kazanexpress.ru/ceiogcn91ring475ddrg/t_product_high.jpg", rating: 4.7 },
+            { id: 5, title: "1984", author: "Джордж Оруэлл", price: 420, oldPrice: null, imgSrc: "https://fkniga.ru/media/product/04/040412/KA-00422700.jpg", rating: 4.9 },
+            { id: 6, title: "Тонкое искусство пофигизма", author: "Марк Мэнсон", price: 480, oldPrice: 620, imgSrc: "https://alpinabook.ru/upload/iblock/377/3770cfeb32b847aa9305fb08bc238c3f.jpg", rating: 4.6 },
+            { id: 7, title: "Эмоциональный интеллект", author: "Дэниел Гоулман", price: 610, oldPrice: 840, imgSrc: "https://avatars.mds.yandex.net/get-mpic/1331400/img_id5400406615907066137.jpeg/orig", rating: 4.7 },
+            { id: 8, title: "Три товарища", author: "Эрих Мария Ремарк", price: 540, oldPrice: null, imgSrc: "https://static.onlinetrade.ru/img/items/m/kniga_tri_tovarishcha_remark_e.m_eksklyuzivnaya_klassika_1609233344_1.jpg", rating: 4.9 }
+        ];
+
+        
+        const bestsellers = booksData.slice(0, 4);
+        const novelties = booksData.filter(book => [2, 4].includes(book.id));
+        const recommended = booksData.slice(4, 8);
+
+        return (
+            <div>
+                <div className="top-bar">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-6">🚚 Бесплатная доставка от 1500₽</div>
+                            <div className="col-6 text-end">📞 8-800-555-35-35 | 12 магазинов в Москве</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="main-header">
+                    <div className="container">
+                        <div className="row align-items-center">
+                            <div className="col-md-3">
+                                <a href="#" className="logo">КНИГИ<span>★</span></a>
+                            </div>
+                            <div className="col-md-6">
+                                <input type="text" className="search-box" placeholder="Искать книгу, автора, серию..." />
+                            </div>
+                            <div className="col-md-3 header-icons text-end">
+                                <i className="far fa-heart"></i>
+                                <i className="far fa-user"></i>
+                                <i className="fas fa-shopping-bag"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="nav-categories">
+                    <div className="container">
+                        <a href="#">Бестселлеры</a>
+                        <a href="#">Новинки</a>
+                        <a href="#">Психология</a>
+                        <a href="#">Бизнес</a>
+                        <a href="#">Художественная</a>
+                        <a href="#">Детям</a>
+                        <a href="#">Аудиокниги</a>
+                        <a href="#">Подарочные</a>
+                    </div>
+                </div>
+
+                <div className="container">
+                    <HeroBanner title="Читай больше, плати меньше" subtitle="Скидки до 35% на главные бестселлеры" />
+
+                    <div className="row">
+                        <div className="col-lg-9">
+                            <BooksGrid books={bestsellers} title="🔥 Бестселлеры недели" />
+                            <hooksGrid books={novelties} title="✨ Новинки месяца" />
+                            <BooksGrid books={recommended} title="📖 Рекомендуем для чтения" />
+                        </div>
+
+                        <div className="col-lg-3 mt-5 mt-lg-0">
+                            <SidebarPromo>
+                                <h5><i className="fas fa-percent text-warning"></i> Спецпредложение</h5>
+                                <p>Закажите от 1500 ₽ и получите <strong>скидку 10%</strong> на следующую покупку.</p>
+                                <button className="btn btn-dark btn-sm w-100 rounded-pill">Подробнее</button>
+                            </SidebarPromo>
+
+                            <SidebarPromo bg="#f4efe7">
+                                <h5><i className="fas fa-book-open-reader"></i> Летняя подборка</h5>
+                                <p>5 книг, которые стоит прочитать этим летом. Комплект со скидкой 20%.</p>
+                                <span className="badge bg-warning text-dark mt-2">Только до конца месяца</span>
+                            </SidebarPromo>
+
+                            <DeliveryInfo />
+                            
+                            <DiscountCard />
+                        </div>
+                    </div>
+                </div>
+
+                <Footer year={2026} />
+            </div>
+        );
+    }
+
+    ReactDOM.render(<App />, document.getElementById('app'));
+</script>
+</body>
+</html>
