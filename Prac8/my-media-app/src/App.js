@@ -1,33 +1,57 @@
 import React, { useState, useRef } from 'react';
 
-// 1. Таймер
+// 1. Таймер обратного отсчёта
 function Timer() {
-  const [startTime, setStartTime] = useState(null);
-  const [now, setNow] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(300);
   const intervalRef = useRef(null);
+  const [isRunning, setIsRunning] = useState(false);
 
-  const handleStart = () => {
-    setStartTime(Date.now());
-    setNow(Date.now());
+  function handleStart() {
+    if (timeLeft <= 0) {
+      setTimeLeft(300);
+    }
+    if (!isRunning) {
+      setIsRunning(true);
+      intervalRef.current = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            clearInterval(intervalRef.current);
+            setIsRunning(false);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+  }
+
+  function handleStop() {
     clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => setNow(Date.now()), 10);
-  };
+    setIsRunning(false);
+  }
 
-  const handleStop = () => clearInterval(intervalRef.current);
+  function handleReset() {
+    clearInterval(intervalRef.current);
+    setIsRunning(false);
+    setTimeLeft(300);
+  }
 
-  const secondsPassed = (startTime && now) ? (now - startTime) / 1000 : 0;
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+  const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
   return (
-    <div style={{ border: '1px solid #ccc', padding: 10, margin: 10, borderRadius: 8 }}>
-      <h2> Таймер отдыха</h2>
-      <h3>{secondsPassed.toFixed(3)} сек</h3>
-      <button onClick={handleStart} style={{ margin: 5 }}>▶ Старт</button>
-      <button onClick={handleStop} style={{ margin: 5 }}>⏹️ Стоп</button>
+    <div style={{ border: '1px solid #ccc', padding: 10, margin: 10, borderRadius: 8, textAlign: 'center' }}>
+      <h2> Таймер обратного отсчёта</h2>
+      <h1 style={{ fontSize: 48 }}>{formattedTime}</h1>
+      <button onClick={handleStart} style={{ margin: 5, padding: '5px 15px' }}> Старт</button>
+      <button onClick={handleStop} style={{ margin: 5, padding: '5px 15px' }}> Стоп</button>
+      <button onClick={handleReset} style={{ margin: 5, padding: '5px 15px' }}> Сброс</button>
     </div>
   );
 }
 
-// 2. Слайдер (ИСПРАВЛЕННЫЙ)
+// 2. Слайдер
 function Slider() {
   const sliderRef = useRef(null);
   const [index, setIndex] = useState(0);
@@ -55,7 +79,6 @@ function Slider() {
   return (
     <div style={{ border: '1px solid #ccc', padding: 10, margin: 10, borderRadius: 8 }}>
       <h2> Новостной слайдер</h2>
-      
       <div 
         ref={sliderRef} 
         style={{ 
@@ -83,10 +106,9 @@ function Slider() {
           </div>
         ))}
       </div>
-      
       <div style={{ marginTop: 10, textAlign: 'center' }}>
-        <button onClick={prevSlide} style={{ margin: 5, padding: '5px 15px' }}>◀ Назад</button>
-        <button onClick={nextSlide} style={{ margin: 5, padding: '5px 15px' }}>Вперед ▶</button>
+        <button onClick={prevSlide} style={{ margin: 5, padding: '5px 15px' }}> Назад</button>
+        <button onClick={nextSlide} style={{ margin: 5, padding: '5px 15px' }}>Вперед </button>
         <p>Слайд {index + 1} из {news.length}</p>
       </div>
     </div>
@@ -96,7 +118,13 @@ function Slider() {
 // 3. Статьи (связанные состояния)
 function Article({ title, content, isActive, onShow }) {
   return (
-    <div style={{ border: '1px solid #ccc', margin: 5, padding: 10, borderRadius: 5 }}>
+    <div style={{ 
+      border: '1px solid #ccc', 
+      margin: 5, 
+      padding: 10, 
+      borderRadius: 5,
+      backgroundColor: isActive ? '#e3f2fd' : 'white'
+    }}>
       <b>{title}</b>
       {isActive ? <p>{content}</p> : <button onClick={onShow}> Читать</button>}
     </div>
@@ -127,11 +155,11 @@ function Articles() {
   );
 }
 
-// Главный компонент
+// ГЛАВНЫЙ КОМПОНЕНТ APP
 export default function App() {
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto' }}>
-      <h1 style={{ textAlign: 'center' }}> СМИ для программистов</h1>
+    <div style={{ maxWidth: 800, margin: '0 auto', fontFamily: 'Arial, sans-serif' }}>
+      <h1 style={{ textAlign: 'center', color: '#333' }}> СМИ для программистов</h1>
       <Timer />
       <Slider />
       <Articles />
