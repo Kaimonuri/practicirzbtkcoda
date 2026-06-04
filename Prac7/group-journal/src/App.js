@@ -6,13 +6,13 @@ function App() {
   const [students, setStudents] = useState([
     { id: 1, name: 'Аньшин Сергей Алексаднрович', course: '3 курс', group: 'ИСП-306', selected: false },
     { id: 2, name: 'Круглов Тимур Викторович', course: '3 курс', group: 'ИСП-306', selected: false },
-    { id: 3, name: 'Захаревич Александр Игорович', course: '3 курс', group: 'ИСП-306', selected: false },
+    { id: 3, name: 'Захаревич Александр -', course: '3 курс', group: 'ИСП-306', selected: false },
   ]);
 
   const [filter, setFilter] = useState('all'); // all, selected, notSelected
   const [newStudentName, setNewStudentName] = useState('');
 
-  // Добавление студента (без push - создаем новый массив)
+  // Добавление студента
   const addStudent = () => {
     if (newStudentName.trim() === '') return;
     
