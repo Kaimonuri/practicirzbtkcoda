@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Выход</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial,sans-serif;
+        }
+
+        body{
+            background:linear-gradient(135deg,#1e3c72,#2a5298);
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .card{
+            background:white;
+            width:450px;
+            padding:40px;
+            border-radius:20px;
+            text-align:center;
+            box-shadow:0 10px 30px rgba(0,0,0,.3);
+        }
+
+        h1{
+            color:#2a5298;
+            margin-bottom:20px;
+        }
+
+        p{
+            color:#666;
+            margin-bottom:30px;
+            font-size:16px;
+        }
+
+        .buttons{
+            display:flex;
+            gap:15px;
+            justify-content:center;
+        }
+
+        button,
+        a{
+            padding:12px 24px;
+            border:none;
+            border-radius:10px;
+            text-decoration:none;
+            cursor:pointer;
+            font-size:15px;
+        }
+
+        button{
+            background:#d9534f;
+            color:white;
+        }
+
+        button:hover{
+            background:#c9302c;
+        }
+
+        a{
+            background:#2a5298;
+            color:white;
+        }
+
+        a:hover{
+            background:#1e3c72;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+
+    <h1>Выход из системы</h1>
+
+    <p>
+        Вы действительно хотите выйти из своей учетной записи?
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="buttons">
+            <button type="submit">
+                Выйти
+            </button>
+
+            <a href="/">
+                Отмена
+            </a>
+        </div>
+    </form>
+
+</div>
+
+</body>
+</html>
